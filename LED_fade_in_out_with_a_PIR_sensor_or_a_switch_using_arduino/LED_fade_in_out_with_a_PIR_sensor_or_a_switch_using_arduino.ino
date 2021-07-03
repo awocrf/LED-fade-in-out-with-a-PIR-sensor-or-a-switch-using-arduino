@@ -1,6 +1,8 @@
 /*
  Code made by awocrf. However, erial disabling was not done by me (Source: https://forum.arduino.cc/t/why-the-code-using-serial-println-compiles-without-serial-begin/413929/10).
  If you want to save some resources by disabling serial communication comment the line below.
+ If you want to enable setting fade in/out delay changing using potentiometer uncomment line 17.
+ If you also want to hide potpin value in serial monitor with potentiometer support enabled comment lines 71 to 74.
  */
 
 // Serial disabling stuff.
@@ -11,11 +13,23 @@
 #else
   #define DEBUG_BEGIN Serial.begin(115200)
 #endif
+
+//#define POTENTIOMETER  // Uncomment this if you want to enable potentiometer support.
+
+#ifndef POTENTIOMETER
+  #define POTENTIOMETER_ENABLE
+#else
+  #define POTENTIOMETER_ENABLE
+#endif
  
 // Pins
 const int LED = 9;      // LED output. WARNING! If you want to use other pin make sure that it's a PWM one. Otherwise it won't work.
 const int RLED = 13;    // Readiness LED pin.
-const int pirpin = 3;   // PIR sensor pin. It can be replaced with a push button. 
+const int pirpin = 3;   // PIR sensor pin. It can be replaced with a push button.
+
+#ifdef POTENTIOMETER
+const int potpin = A0;  // Potentiometer pin.
+#endif
 
 // Values
 int dly = 15;           // Delay between writing new value to LED pin. Default is 15.
@@ -27,6 +41,8 @@ int state = 0;          // Variable used to define whether LED is on or off to a
  
 void setup()  {
   DEBUG_BEGIN;
+  
+  POTENTIOMETER_ENABLE;
    
   pinMode(LED, OUTPUT);   // Declaring LED pin as output.
   pinMode(RLED, OUTPUT);  // Declaring RLED pin as output.
@@ -42,11 +58,21 @@ void setup()  {
  
 void loop()  {
   pir = digitalRead(pirpin); // Setting "pir" as pirpin's current value.
+  
+  #ifdef POTENTIOMETER
+  dly = map(potpin, 0, 1023, 0, 1050); // Changing range from 0-1023 to 0-50.
+  #endif
 
   // Serial monitor communication.
   #ifdef DEBUG
   Serial.print(F("NEW LOOP, LED state = "));
   Serial.print(state);
+  
+  #ifdef POTENTIOMETER
+  Serial.print(", potpin = ");
+  Serial.print(potpin);
+  #endif
+  
   Serial.print(F(", LED brgt dly = "));
   Serial.print(dly);
   Serial.print(F(", PIR = "));
