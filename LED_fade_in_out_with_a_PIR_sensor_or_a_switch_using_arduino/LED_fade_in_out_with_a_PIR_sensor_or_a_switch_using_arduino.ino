@@ -1,8 +1,8 @@
 /*
  Code made by awocrf. However, erial disabling was not done by me (Source: https://forum.arduino.cc/t/why-the-code-using-serial-println-compiles-without-serial-begin/413929/10).
- If you want to save some resources by disabling serial communication comment the line below.
+ If you want to save some resources by disabling serial communication comment line 9.
  If you want to enable setting fade in/out delay changing using potentiometer uncomment line 17.
- If you also want to hide potpin value in serial monitor with potentiometer support enabled comment lines 71 to 74.
+ If you also want to hide potpin value in serial monitor with potentiometer support enabled comment lines 76 to 79.
  */
 
 // Serial disabling stuff.
@@ -38,6 +38,10 @@ const int dly3 = 3100;  // For some reason my PIR sensor is sending high signal 
 const int dly4 = 100;   // Readiness LED's flash time. Default is 100.
 int pir = 0;            // PIR sensor value. Don't change this!
 int state = 0;          // Variable used to define whether LED is on or off to avoid "breathing LED" effect. Don't change this too!
+
+#ifdef POTENTIOMETER
+int pot = 60; // Potentiometer value
+#endif
  
 void setup()  {
   DEBUG_BEGIN;
@@ -60,7 +64,8 @@ void loop()  {
   pir = digitalRead(pirpin); // Setting "pir" as pirpin's current value.
   
   #ifdef POTENTIOMETER
-  dly = map(potpin, 0, 1023, 0, 1050); // Changing range from 0-1023 to 0-50.
+  pot = analogRead(potpin);       // Setting potpin as pots value
+  dly = map(pot, 0, 1023, 0, 50); // Changing range from 0-1023 to 0-50.
   #endif
 
   // Serial monitor communication.
@@ -69,8 +74,8 @@ void loop()  {
   Serial.print(state);
   
   #ifdef POTENTIOMETER
-  Serial.print(", potpin = ");
-  Serial.print(potpin);
+  Serial.print(", pot = ");
+  Serial.print(pot);
   #endif
   
   Serial.print(F(", LED brgt dly = "));
