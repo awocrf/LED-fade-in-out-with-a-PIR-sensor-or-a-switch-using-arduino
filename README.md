@@ -10,6 +10,8 @@ Pin 13 - RLED output. When you connect LED here (But you don't have to sice most
 
 Pin 3 - signal input. This is where you connect whatever is sending it. Signals maximum length is dependent on value of dly (delay). If it'll be longer than dly value * 255 (I think) + how much time arduino needs to change to next PWM value and complete analogWrite, the LED will do a "breathing effect" (Fade in and out without stopping.).
 
+Pin A0 - potentiometer input. After connecting it here and enabling it in the code you can change main delay (dly) in real time (not including when LED in turning on or off).
+
 Other things are explained it the code comments.
 
 Disclaimer: there might be some stupid things in the code that can be done way better and that I don't see because my programming skills aren't so good.
