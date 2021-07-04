@@ -12,7 +12,9 @@ Pin 3 - signal input. This is where you connect whatever is sending it. The code
 
 Pin A0 - delay potentiometer input. After connecting it here and enabling it in the code you can change main delay (dly) in real time (not including when LED in turning on or off).
 
-Pin A1 - max brightness potentiometer. By connecting it ant enabling its support in the code you can change maximum brightness to which the LED will go up an then stop.
+Pin A1 - max brightness potentiometer. By connecting it and enabling its support in the code you can change maximum brightness to which the LED will go up an then stop.
+
+Pin A2 - min brightness potentiometer. Same thing as above but minimum, not maximum.
 
 Other things are explained it the code comments.
 
